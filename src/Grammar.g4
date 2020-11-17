@@ -1,22 +1,46 @@
 grammar Grammar;
 start:    (expr NEWLINE)* ;
-expr :    exp_arith
+expr :    exp_notf
      |    exp_assgn
      |    exp_input
      |    exp_output
      ;
 exp_input:    VAR SPACE* '=' SPACE* 'int(input())' ;
 exp_output:   'print(' SPACE* VAR SPACE* ')' ;
-exp_assgn:    VAR SPACE* '=' SPACE* exp_arith ;
+exp_assgn:    VAR SPACE* '=' SPACE* exp_notf ;
+exp_notf: exp_bool
+        | exp_arith
+        ;
 exp_arith:    exp_arith SPACE* ('*'|'/') SPACE* exp_arith
          |    exp_arith SPACE* ('+'|'-') SPACE* exp_arith
          |    INT
          |    VAR
          |    '(' SPACE* exp_arith SPACE* ')'
          ;
+exp_bool:    exp_bool_not SPACE* exp_bool
+        |    exp_bool SPACE* exp_bool_and SPACE* exp_bool
+        |    exp_bool SPACE* exp_bool_or SPACE* exp_bool
+        |    exp_bool_var
+        |    exp_bool_true
+        |    exp_bool_false
+        |    '(' SPACE* exp_bool_ SPACE* ')'
+        ;
+exp_bool_: exp_bool ;
+exp_bool_var: VAR ;
+exp_bool_true: BOOL_TRUE ;
+BOOL_TRUE : 'True' ;
+exp_bool_false: BOOL_FALSE ;
+BOOL_FALSE: 'False';
+
+exp_bool_or: BOOL_OR ;
+BOOL_OR   : 'or'   ;
+exp_bool_and: BOOL_AND ;
+BOOL_AND  : 'and'   ;
+exp_bool_not: BOOL_NOT ;
+BOOL_NOT  : 'not'   ;
 
 NEWLINE : [\r\n]+ ;
 SPACE   : [ \t] ;
-
+TAB     : [\t]  ;
 VAR     : [a-zA-Z][a-zA-Z0-9_]* ;
 INT     : [0-9]+ ;

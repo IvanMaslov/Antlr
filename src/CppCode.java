@@ -16,6 +16,10 @@ public class CppCode {
         expressions.add(s);
     }
 
+    public String dropLast() {
+        return expressions.pollLast();
+    }
+
     @Override
     public String toString() {
         StringBuilder ans = new StringBuilder("#include<iostream>\n");
