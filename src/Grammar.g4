@@ -49,11 +49,10 @@ if_statement:           if_statement_else NEWLINE
 
 funct_name:     VAR ;
 funct_arg:      VAR ;
-funct:          'def ' funct_name '(' funct_arg '):' offset_statemnts NEWLINE ;
-exp_ret:        'return ' VAR ;
-funct_call:     funct_name '(' funct_arg ')'
-          |     funct_name '(' exp_arith ')'
-          ;
+funct:          'def ' funct_name '(' ( SPACE* funct_arg  SPACE* ',' SPACE*)* funct_arg SPACE* '):'
+offset_statemnts NEWLINE ;
+exp_ret:        'return ' exp_arith ;
+funct_call:     funct_name '(' ( SPACE* exp_arith  SPACE* ',' SPACE*)* exp_arith ')' ;
 
 NEWLINE : [\r\n]+ ;
 SPACE   : [ \t] ;

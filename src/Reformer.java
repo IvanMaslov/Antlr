@@ -1,4 +1,8 @@
+import org.antlr.v4.runtime.RuleContext;
+
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Reformer extends GrammarBaseListener {
     private CppCode result = new CppCode();
@@ -62,7 +66,9 @@ public class Reformer extends GrammarBaseListener {
     public void enterFunct(GrammarParser.FunctContext ctx) {
         currFunction = result;
         String name = ctx.funct_name().getText();
-        String arg = ctx.funct_arg().getText();
+        List<String> arg = ctx.funct_arg().stream()
+                .map(RuleContext::getText)
+                .collect(Collectors.toList());
         result = new CppCode(name, arg);
     }
 
@@ -76,7 +82,7 @@ public class Reformer extends GrammarBaseListener {
 
     @Override
     public void exitExp_ret(GrammarParser.Exp_retContext ctx) {
-        result.addExpr("return " + ctx.VAR().getText() + ";", Set.of());
+        result.addExpr("return " + ctx.exp_arith().getText() + ";", Set.of());
     }
 
     @Override

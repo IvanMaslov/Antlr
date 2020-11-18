@@ -9,7 +9,7 @@ public class CppCode {
     private final List<CppCode> functions = new LinkedList<>();
     private final boolean isFunction;
     private final String functName;
-    private final String functArg;
+    private final List<String> functArg;
 
     public CppCode() {
         this.isFunction = false;
@@ -17,7 +17,7 @@ public class CppCode {
         this.functArg = null;
     }
 
-    public CppCode(String functName, String functArg) {
+    public CppCode(String functName, List<String> functArg) {
         this.isFunction = true;
         this.functName = functName;
         this.functArg = functArg;
@@ -57,11 +57,14 @@ public class CppCode {
                     .append("int ")
                     .append(functName)
                     .append("(int ")
-                    .append(functArg)
+                    .append(functArg.get(0));
+            for (int i = 1; i < functArg.size(); ++i)
+                ans.append(", int " + functArg.get(i));
+            ans
                     .append(")");
             ans.append("{\n");
             for (var i : variables) {
-                if (i.equals(functArg)) continue;
+                if (functArg.contains(i)) continue;
                 ans
                         .append("\tint ")
                         .append(i)
