@@ -1,5 +1,5 @@
 grammar Grammar;
-start:    (expr NEWLINE)* ;
+start:    (if_statement | funct | (expr NEWLINE))* ;
 expr :    exp_notf
      |    exp_assgn
      |    exp_input
@@ -14,6 +14,7 @@ exp_notf: exp_bool
 exp_arith:    exp_arith SPACE* ('*'|'/') SPACE* exp_arith
          |    exp_arith SPACE* ('+'|'-') SPACE* exp_arith
          |    INT
+         |    funct_call
          |    VAR
          |    '(' SPACE* exp_arith SPACE* ')'
          ;
@@ -38,6 +39,21 @@ exp_bool_and: BOOL_AND ;
 BOOL_AND  : 'and'   ;
 exp_bool_not: BOOL_NOT ;
 BOOL_NOT  : 'not'   ;
+
+offset_statemnts:       (NEWLINE+ SPACE+ (expr | exp_ret) )+ ;
+if_statement_core:      'if' SPACE+ exp_bool SPACE* ':' offset_statemnts ;
+if_statement_else:      if_statement_core NEWLINE 'else:' offset_statemnts ;
+if_statement:           if_statement_else NEWLINE
+            |           if_statement_core NEWLINE
+            ;
+
+funct_name:     VAR ;
+funct_arg:      VAR ;
+funct:          'def ' funct_name '(' funct_arg '):' offset_statemnts NEWLINE ;
+exp_ret:        'return ' VAR ;
+funct_call:     funct_name '(' funct_arg ')'
+          |     funct_name '(' exp_arith ')'
+          ;
 
 NEWLINE : [\r\n]+ ;
 SPACE   : [ \t] ;

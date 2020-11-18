@@ -24,4 +24,7 @@ class TranslatorTest {
     @Test void test_02() throws IOException { testCase("02"); }
     @Test void test_03() throws IOException { testCase("03"); }
     @Test void test_bool() throws IOException { testCase("bool"); }
+    @Test void test_if() throws IOException { testCase("if"); }
+    @Test void test_fun() throws IOException { testCase("fun"); }
+    @Test void test_hard() throws IOException { testCase("hard"); }
 }
